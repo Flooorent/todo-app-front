@@ -12,4 +12,19 @@ function Todo(props){
     )
 }
 
-export default Todo
+function EmptyTodo(props) {
+    return (
+        <li>
+            <input
+                type="text"
+                placeholder="Add TODO"
+                onKeyUp={props.createTodoFromKeyUp}
+            />
+        </li>
+    )
+}
+
+export {
+    Todo,
+    EmptyTodo,
+}

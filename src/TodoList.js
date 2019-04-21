@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import Todo from './Todo'
+import { EmptyTodo, Todo } from './Todo'
 import './TodoList.css'
 
 const ENTER_KEY_CODE = 13
@@ -15,6 +15,7 @@ class TodoList extends Component {
         }
 
         this.handleKeyUp = this.handleKeyUp.bind(this)
+        this.createTodoFromKeyUp = this.createTodoFromKeyUp.bind(this)
     }
 
     componentDidMount() {
@@ -43,6 +44,21 @@ class TodoList extends Component {
         }
     }
 
+    createTodoFromKeyUp(event) {
+        if(event.keyCode === ENTER_KEY_CODE) {
+            event.preventDefault()
+
+            const newTodoText = event.target.value
+            if(newTodoText) {
+                const data = { text: newTodoText }
+
+                axios.post('/api/todo', data)
+                    .then(response => this.setState({ todos: response.data }))
+                    .catch(error => this.setState({ error }))
+            }
+        }
+    }
+
     render() {
         if(!this.state.todos.length) {
             return (
@@ -59,6 +75,8 @@ class TodoList extends Component {
                         handleKeyUp={this.handleKeyUp(todo._id)}
                     />
                 ))}
+                {/* We add a new key to prevent React from rendering the empty todo with the text from the newly created todo */}
+                <EmptyTodo key={Date.now().toString()} createTodoFromKeyUp={this.createTodoFromKeyUp}/>
             </ul>
         )
     }
