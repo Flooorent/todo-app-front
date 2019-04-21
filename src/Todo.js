@@ -1,8 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 function Todo(props){
     return (
-        <li>{props.text}</li>
+        <li>
+            <input
+                type="text"
+                defaultValue={props.text}
+                onKeyUp={props.handleKeyUp}
+            />
+        </li>
     )
 }
 
