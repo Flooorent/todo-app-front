@@ -16,6 +16,7 @@ class TodoList extends Component {
 
         this.handleKeyUp = this.handleKeyUp.bind(this)
         this.createTodoFromKeyUp = this.createTodoFromKeyUp.bind(this)
+        this.deleteTodo = this.deleteTodo.bind(this)
     }
 
     componentDidMount() {
@@ -59,6 +60,15 @@ class TodoList extends Component {
         }
     }
 
+    deleteTodo(todoId) {
+        return () => {
+            console.log('deleteTodo called')
+            axios.delete(`/api/todo/${todoId}`)
+                .then(response => this.setState({ todos: response.data }))
+                .catch(error => this.setState({ error }))
+        }
+    }
+
     render() {
         if(!this.state.todos.length) {
             return (
@@ -73,10 +83,11 @@ class TodoList extends Component {
                         key={todo._id}
                         text={todo.text}
                         handleKeyUp={this.handleKeyUp(todo._id)}
+                        handleClick={this.deleteTodo(todo._id)}
                     />
                 ))}
                 {/* We add a new key to prevent React from rendering the empty todo with the text from the newly created todo */}
-                <EmptyTodo key={Date.now().toString()} createTodoFromKeyUp={this.createTodoFromKeyUp}/>
+                <EmptyTodo key={Date.now().toString()} handleKeyUp={this.createTodoFromKeyUp}/>
             </ul>
         )
     }

@@ -8,6 +8,7 @@ function Todo(props){
                 defaultValue={props.text}
                 onKeyUp={props.handleKeyUp}
             />
+            <button type="submit" onClick={props.handleClick}></button>
         </li>
     )
 }
@@ -18,7 +19,7 @@ function EmptyTodo(props) {
             <input
                 type="text"
                 placeholder="Add TODO"
-                onKeyUp={props.createTodoFromKeyUp}
+                onKeyUp={props.handleKeyUp}
             />
         </li>
     )
